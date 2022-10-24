@@ -8,13 +8,15 @@ screen.addshape(image)
 turtle.shape(image)
 
 quiz_on = True
-correct_guesses = 0
+correct_guesses = []
+score = 0
 
 while quiz_on:
 
-    answer_state = screen.textinput(title=f"{correct_guesses}/50 Guess the State", prompt="What's another state's name?").title()
+    answer_state = screen.textinput(title=f"{score}/50 Guess the State", prompt="What's another state's name?").title()
     states = pandas.read_csv('50_states.csv')
-    if answer_state in states.values:
+    if answer_state in states.values and not answer_state in correct_guesses:
+        correct_guesses.append(answer_state)
         coor = states[states.state == answer_state]
         x_coor = coor.iloc[0, 1]
         y_coor = coor.iloc[0, 2]
@@ -23,8 +25,7 @@ while quiz_on:
         state_name.penup()
         state_name.goto(x_coor, y_coor)
         state_name.write(answer_state)
-        correct_guesses += 1
-
+        score += 1
 
 
 # Get coordinates
@@ -32,5 +33,5 @@ while quiz_on:
 #     print(x, y)
 #
 # turtle.onscreenclick(get_mouse_click_coor)
-#
+
 turtle.mainloop()
